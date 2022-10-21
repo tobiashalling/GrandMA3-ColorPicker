@@ -199,7 +199,7 @@ function main()
     Cmd('blind') -- turns blind mode on such that no dmx is output
     color()
     imports()
-    groups = getNonEmptyUserInput("Number of groups (4 max)", "1")
+    groups = getNonEmptyUserInput("Number of groups (4 max)", "0")
     seq()
     mac()
     Cmd('blind off') -- turns blind mode off, such that dmx can be sent again
