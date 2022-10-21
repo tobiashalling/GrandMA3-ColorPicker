@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GMA3 DataVersion="1.8.1.0">
+    <UserPlugin Name="ColorPicker" Guid="36 21 19 C9 49 BB 0C 00 A9 80 59 0E FE 15 42 1D" Version="0.0.0.0">
+        <ComponentLua Name="ColorPicker_v0" Guid="36 21 19 C9 21 FF 0C 00 50 21 CF 26 20 78 66 2E" FileName="ColorPicker_v0" />
+    </UserPlugin>
+</GMA3>

@@ -1,0 +1,209 @@
+--[[
+    The folowing code is a renewall of my eairlier colorpicker for GrandMA2. In this new version for GrandMA3
+    some ease of use assumptions have been made. This shouldn't hinder programming. 
+
+    This new script takes into account that we do not have auto create in MA3 yet, by using MA's own gels. 
+    The script is also utilizing the new way of assigning appearances instead of copy-overwriting images.  
+
+    Revision: 0
+    Code by Tobias Halling
+
+    Inspiration by Christian Jackson and AGuyNamedJonas
+]]--
+
+function print (msg)
+    -- gma.feedback(msg)
+    Echo(msg)
+end
+
+function getNonEmptyUserInput (msg, placeholder)
+    placeholder = placeholder or ''
+    local userInput = ''
+    repeat
+        userInput = TextInput(msg, placeholder)
+    until userInput ~= placeholder
+    return userInput
+end
+
+function color()
+    Cmd('Group 1 thru')
+    Cmd('At Gel "MA"."white"')
+    Cmd('Store Preset 4.1')
+    Cmd('At Gel "MA"."red"')
+    Cmd('Store Preset 4.2')
+    Cmd('At Gel "MA"."orange"')
+    Cmd('Store Preset 4.3')
+    Cmd('At Gel "MA"."yellow"')
+    Cmd('Store Preset 4.4')
+    Cmd('At Gel "MA"."Fern Green"')
+    Cmd('Store Preset 4.5')
+    Cmd('At Gel "MA"."Green"')
+    Cmd('Store Preset 4.6')
+    Cmd('At Gel "MA"."Sea green"')
+    Cmd('Store Preset 4.7')
+    Cmd('At Gel "MA"."cyan"')
+    Cmd('Store Preset 4.8')
+    Cmd('At Gel "MA"."lavender"')
+    Cmd('Store Preset 4.9')
+    Cmd('At Gel "MA"."blue"')
+    Cmd('Store Preset 4.10')
+    Cmd('At Gel "MA"."violet"')
+    Cmd('Store Preset 4.11')
+    Cmd('At Gel "MA"."magenta"')
+    Cmd('Store Preset 4.12')
+    Cmd('At Gel "MA"."pink"')
+    Cmd('Store Preset 4.13')
+end
+
+function imports()
+    Cmd('Import appearance library "Colorpicker.xml" at appearance 101')
+end
+
+function seq()
+    local colors = {
+    'White', 'Red', 'Orange', 'Yellow', 'Lime', 'Green', 
+    'Coral', 'Cyan', 'LightBlue', 'Blue', 'Purple', 
+    'Pink', 'Magenta',}
+        
+
+    --giving color info
+    SeqNum = 0
+    for k = 1, groups, 1 do
+        for i = 1, 13, 1 do
+            local colorNum = i
+            SeqNum = SeqNum + 1 
+            print(SeqNum)
+            Cmd('Group '.. k)
+            Cmd('At Preset 4.'..colorNum)
+
+            -- if loop sørger for at der bliver talt rigtigt
+            if SeqNum < 10 then
+                Cmd('Store Sequence 80'..k.. ' Cue ' ..SeqNum.. ' /C')
+            else
+                Cmd('Store Sequence 8'..k.. ' Cue '..SeqNum.. ' /C')
+            end
+            
+            -- renaming of sequence
+            -- if loop sørger for at der tælles rigtigt
+            if SeqNum < 10 then
+                Cmd('Label Sequence 80'..k.. ' Cue '..SeqNum..' \"'..colors[i]..'\"')
+            else
+                Cmd('Label Sequence 8'..k.. ' Cue '..SeqNum..' \"'..colors[i]..'\"')
+            end
+            print('Inner loop '..i..' done')
+        end
+    end
+end
+
+function mac()
+
+    -- Setting variables for later use
+    Cmd('SetGlobalVar "EmptyColors" "Appearance 114 thru 126"')
+    Cmd('SetGlobalVar "Fix1Colors" "Macro 801 thru 813"')
+    Cmd('SetGlobalVar "Fix2Colors" "Macro 814 thru 826"')
+    Cmd('SetGlobalVar "Fix3Colors" "Macro 827 thru 839"')
+    Cmd('SetGlobalVar "FixColors" "Macro 840 thru 852"')
+    
+    -- Color names for use in renaming
+    local colors = {
+    'White', 'Red', 'Orange', 'Yellow', 'Lime', 'Green', 
+    'Coral', 'Cyan', 'LightBlue', 'Blue', 'Purple', 
+    'Pink', 'Magenta',}
+    
+    MacroNum = 0
+    for j = 1, groups+1 do
+        for i = 1, 13 do
+            local colorNum = i
+            MacroNum = MacroNum + 1
+            print('MacroNum = '..MacroNum)
+
+            -- Create macro
+            if MacroNum < 10 then
+                Cmd("Store Macro 80"..MacroNum)
+                Cmd("Label Macro 80"..MacroNum.." \""..colors[i].."\"")
+            else
+                Cmd("Store Macro 8"..MacroNum)
+                Cmd("Label Macro 8"..MacroNum.." \""..colors[i].."\"")
+            end
+            
+            -- nested table with lines of code to be written into the macross
+            local macroLines = {
+                {"go sequence 801 cue 1", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 101 At Macro 801 "},
+                {"go sequence 801 cue 2", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 102 At Macro 802 "},
+                {"go sequence 801 cue 3", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 103 At Macro 803 "},
+                {"go sequence 801 cue 4", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 104 At Macro 804 "},
+                {"go sequence 801 cue 5", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 105 At Macro 805 "},
+                {"go sequence 801 cue 6", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 106 At Macro 806 "},
+                {"go sequence 801 cue 7", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 107 At Macro 807 "},
+                {"go sequence 801 cue 8", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 108 At Macro 808 "},
+                {"go sequence 801 cue 9", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 109 At Macro 809 "},
+                {"go sequence 801 cue 10", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 110 At Macro 810 "},
+                {"go sequence 801 cue 11", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 111 At Macro 811 "},
+                {"go sequence 801 cue 12", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 112 At Macro 812 "},
+                {"go sequence 801 cue 13", "Assign $EmptyColors  At $Fix1Colors ", "Assign Appearance 113 At Macro 813 "},
+                {"go sequence 802 cue 1", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 101 At Macro 814 "},
+                {"go sequence 802 cue 2", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 102 At Macro 815 "},
+                {"go sequence 802 cue 3", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 103 At Macro 816 "},
+                {"go sequence 802 cue 4", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 104 At Macro 817 "},
+                {"go sequence 802 cue 5", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 105 At Macro 818 "},
+                {"go sequence 802 cue 6", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 106 At Macro 819 "},
+                {"go sequence 802 cue 7", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 107 At Macro 820 "},
+                {"go sequence 802 cue 8", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 108 At Macro 821 "},
+                {"go sequence 802 cue 9", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 109 At Macro 822 "},
+                {"go sequence 802 cue 10", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 110 At Macro 823 "},
+                {"go sequence 802 cue 11", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 111 At Macro 824 "},
+                {"go sequence 802 cue 12", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 112 At Macro 825 "},
+                {"go sequence 802 cue 13", "Assign $EmptyColors  At $Fix2Colors ", "Assign Appearance 113 At Macro 826 "},
+                {"go sequence 803 cue 1", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 101 At Macro 827 "},
+                {"go sequence 803 cue 2", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 102 At Macro 828 "},
+                {"go sequence 803 cue 3", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 103 At Macro 829 "},
+                {"go sequence 803 cue 4", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 104 At Macro 830 "},
+                {"go sequence 803 cue 5", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 105 At Macro 831 "},
+                {"go sequence 803 cue 6", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 106 At Macro 832 "},
+                {"go sequence 803 cue 7", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 107 At Macro 833 "},
+                {"go sequence 803 cue 8", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 108 At Macro 834 "},
+                {"go sequence 803 cue 9", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 109 At Macro 835 "},
+                {"go sequence 803 cue 10", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 110 At Macro 836 "},
+                {"go sequence 803 cue 11", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 111 At Macro 837 "},
+                {"go sequence 803 cue 12", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 112 At Macro 838 "},
+                {"go sequence 803 cue 13", "Assign $EmptyColors  At $Fix3Colors ", "Assign Appearance 113 At Macro 839 "},
+                {"go sequence 804 cue 1", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 101 At Macro 840 "},
+                {"go sequence 804 cue 2", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 102 At Macro 841 "},
+                {"go sequence 804 cue 3", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 103 At Macro 842 "},
+                {"go sequence 804 cue 4", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 104 At Macro 843 "},
+                {"go sequence 804 cue 5", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 105 At Macro 844 "},
+                {"go sequence 804 cue 6", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 106 At Macro 845 "},
+                {"go sequence 804 cue 7", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 107 At Macro 846 "},
+                {"go sequence 804 cue 8", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 108 At Macro 847 "},
+                {"go sequence 804 cue 9", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 109 At Macro 848 "},
+                {"go sequence 804 cue 10", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 110 At Macro 849 "},
+                {"go sequence 804 cue 11", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 111 At Macro 850 "},
+                {"go sequence 804 cue 12", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 112 At Macro 851 "},
+                {"go sequence 804 cue 13", "Assign $EmptyColors  At $Fix4Colors ", "Assign Appearance 113 At Macro 852 "},
+                }
+            
+            for k = 1, 3 do
+                if MacroNum < 10 then
+                    Cmd('Store Macro 80' .. MacroNum .. '.' .. k)
+                    Cmd('Set Macro 80'..MacroNum..'.'.. k .. ' \"Command\" ' .. '\"' .. macroLines[MacroNum][k] .. '\"')
+                else
+                    Cmd('Store Macro 8' .. MacroNum .. '.' .. k)
+                    Cmd('Set Macro 8'..MacroNum..'.'.. k .. ' \"Command\" ' .. '\"' .. macroLines[MacroNum][k] .. '\"')
+                end
+            end
+        end
+    end
+end
+
+function main()
+    Cmd('blind') -- turns blind mode on such that no dmx is output
+    color()
+    imports()
+    groups = getNonEmptyUserInput("Number of groups (4 max)", "1")
+    seq()
+    mac()
+    Cmd('blind off') -- turns blind mode off, such that dmx can be sent again
+    print('End of plugin')
+end
+
+return main
