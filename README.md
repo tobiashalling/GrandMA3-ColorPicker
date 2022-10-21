@@ -6,6 +6,8 @@ You as user should therefore easily be able to modify the script to your specifi
 
 You can download and modify the script as you will. 
 
+The repository also includes an xml version of the script for easy import in MA3
+
 Feel free to commit issues with the code and give constructive feedback
 
 Happy programming
